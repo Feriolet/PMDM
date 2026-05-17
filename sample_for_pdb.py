@@ -229,6 +229,8 @@ if __name__ == '__main__':
                         help='generalized, ddpm_noisy, ld: sampling method for DDIM, DDPM or Langevin Dynamics')
     parser.add_argument('--eta', type=float, default=1.0,
                         help='weight for DDIM and DDPM: 0->DDIM, 1->DDPM')
+    parser.add_argument('--outdir', type=str, required=False,
+                        help='output directory of the generated compound')
     args = parser.parse_args()
 
     protein_root = os.path.dirname(args.pdb_path)
@@ -242,7 +244,10 @@ if __name__ == '__main__':
     device = torch.device("cuda" if args.cuda else "cpu")
 
     seed_all(config.train.seed)
-    log_dir = os.path.join(os.path.dirname(os.path.dirname(args.ckpt)), 'custom_pdb')
+    if args.outdir:
+        log_dir = os.path.join(args.outdir, 'custom_pdb')
+    else:
+        log_dir = os.path.join(os.path.dirname(args.pdb_path), 'custom_pdb')
 
 
     if args.n_steps == 0:
@@ -309,12 +314,15 @@ if __name__ == '__main__':
     # sample
     # gen_file_name = os.path.basename(args.pdb_path) + '_gen.sdf'
     # print(gen_file_name)
-    save_sdf_flag = args.savedir
+    save_sdf_flag = args.save_sdf
     if save_sdf_flag:
-        sdf_dir = os.path.join(os.path.dirname(args.pdb_path), 'generate_ref')
+        if args.outdir:
+            sdf_dir = os.path.join(args.outdir, 'generate_ref')
+        else:
+            sdf_dir = os.path.join(os.path.dirname(args.pdb_path), 'generate_ref')
         print('sdf idr:', sdf_dir)
         os.makedirs(sdf_dir, exist_ok=True)
-    save_results = False
+    save_results = True
     valid = 0
     stable = 0
     high_affinity = 0.0
