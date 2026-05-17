@@ -1,4 +1,4 @@
-name: mol
+name: benchmark_pmdm
 channels:
   - nvidia
   - conda-forge
@@ -217,6 +217,8 @@ dependencies:
       - sander==22.0
       - scikit-learn==1.4.2
       - threadpoolctl==3.4.0
+      - --extra-index-url https://download.pytorch.org/whl/cu118
+      - --find-links https://pytorch-geometric.com/whl/torch-2.1.1+cu118.html
       - torch-cluster==1.6.3+pt21cu118
       - torch-geometric==2.4.0
       - torch-scatter==2.1.2+pt21cu118
@@ -224,4 +226,4 @@ dependencies:
       - torch-spline-conv==1.2.2+pt21cu118
       - tqdm==4.66.2
       - yarl==1.9.4
-prefix: /home/user/miniconda3/envs/mol
+
