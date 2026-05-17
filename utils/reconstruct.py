@@ -413,7 +413,8 @@ def postprocess_rd_mol_1(rdmol):
                     bond.SetBondType(UPGRADE_BOND_ORDER[bond.GetBondType()])
                     nb_atom.SetNumRadicalElectrons(nb_radical - 1)
                     num_radical -= 1
-            atom.SetNumRadicalElectrons(num_radical)
+
+            atom.SetNumRadicalElectrons(max(0, num_radical))
 
         num_radical = atom.GetNumRadicalElectrons()
         if num_radical > 0:
